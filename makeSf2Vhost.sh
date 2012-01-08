@@ -76,7 +76,7 @@ then
 	tar -zxf "${_workspace}/symfony.tar.gz"
 	mv Symfony/* .
 	rm -Rf Symfony
-	chown -R ${_user}: *
+	chown -R ${_user}: ${_workspace}
 	chmod -R 777 app/cache app/logs
 fi
 
