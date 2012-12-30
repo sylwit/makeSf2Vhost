@@ -53,7 +53,6 @@ _vhost="
         \t</Directory>\n
 </VirtualHost>
 "
-touch ${_vhostFile}/${_name}
 echo -e ${_vhost} > ${_vhostFile}/${_name}
 
 a2ensite ${_name}
