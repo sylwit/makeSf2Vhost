@@ -12,7 +12,7 @@ _url='local'
 
 _user='sylvain'
 
-_sfTGZ='http://symfony.com/download?v=Symfony_Standard_Vendors_2.0.9.tgz'
+_sfTGZ='http://symfony.com/download?v=Symfony_Standard_Vendors_2.1.6.tgz'
 _vhostFile='/etc/apache2/sites-available'
 
 #### No editing below #####
