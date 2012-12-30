@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2011 myeshop <http://www.myeshop.fr>
+# Copyright (c) 2012 myeshop <http://www.myeshop.fr>
 # This script is licensed under GNU GPL version 2.0 or above
 # Author Sylvain Witmeyer <s.witmeyer@myeshop.fr>
 #
@@ -9,10 +9,8 @@
 _name='new_sf2'
 _path='/var/www/html/'
 _url='local'
-
+_sfVersion='2.1.6' 
 _user='sylvain'
-
-_sfTGZ='http://symfony.com/download?v=Symfony_Standard_Vendors_2.1.6.tgz'
 _vhostFile='/etc/apache2/sites-available'
 
 #### No editing below #####
@@ -29,9 +27,6 @@ then
 fi
 
 _workspace="${_path}/${_name}"
-echo -e 'Building workspace ... [OK]'
-mkdir "${_workspace}"
-
 
 _url="${_name}.${_url}"
 read -p "URL  [${_url}]: " tmpUrl
@@ -66,18 +61,24 @@ a2ensite ${_name}
 echo -e 'Restarting Apache'
 apachectl restart
 
-_installSf='N'
-read -p "Do you want to install Sf in your workspace [${_sfTGZ}]: [N] " tmpInstallSf
+read -p "Do you want to install Symfony in your workspace : [N] " tmpInstallSf
 if [ "$tmpInstallSf" = 'Y' ]
 then
-	echo -e 'Installing Symfony'
-	cd ${_workspace}
-	wget -O symfony.tar.gz ${_sfTGZ}
-	tar -zxf "${_workspace}/symfony.tar.gz"
-	mv Symfony/* .
-	rm -Rf Symfony
+        read -p "Specify a version of Symfony : [${_sfVersion}] " _sfVersionInteractive
+
+        if [ -n "$_sfVersionInteractive" ]
+        then
+                _sfVersion=$_sfVersionInteractive
+        fi
+
+        echo -e "Get Composer"
+        curl -s http://getcomposer.org/installer | php
+
+        echo -e "Installing Symfony ${_sfVersion}"
+        php composer.phar create-project symfony/framework-standard-edition ${_workspace} ${_sfVersion}
+
 	chown -R ${_user}: ${_workspace}
-	chmod -R 777 app/cache app/logs
+	chmod -R 777 ${_workspace}/app/cache ${_workspace}/app/logs
 fi
 
 
