@@ -9,7 +9,7 @@
 _name='new_sf2'
 _path='/var/www/html/'
 _url='local'
-_sfVersion='2.1.6' 
+_sfVersion='2.1.7' 
 _user='sylvain'
 _vhostFile='/etc/apache2/sites-available'
 
@@ -35,11 +35,11 @@ then
 	_url="$tmpUrl"
 fi
 
-echo -e 'Adding URL to hosts'
-echo -e "# Automatic add by makeSfVhost\n127.0.0.1	${_url}" >> /etc/hosts
+echo 'Adding URL to hosts'
+echo "# Automatic add by makeSfVhost\n127.0.0.1	${_url}" >> /etc/hosts
 
 
-echo -e 'Adding Vhost'
+echo 'Adding Vhost'
 _vhost="
 <VirtualHost *:80>\n
 	\tServerName ${_url}\n
@@ -53,11 +53,11 @@ _vhost="
         \t</Directory>\n
 </VirtualHost>
 "
-echo -e ${_vhost} > ${_vhostFile}/${_name}
+echo ${_vhost} > ${_vhostFile}/${_name}
 
 a2ensite ${_name}
 
-echo -e 'Restarting Apache'
+echo 'Restarting Apache'
 apachectl restart
 
 read -p "Do you want to install Symfony in your workspace : [N] " tmpInstallSf
@@ -70,10 +70,10 @@ then
                 _sfVersion=$_sfVersionInteractive
         fi
 
-        echo -e "Get Composer"
+        echo "Get Composer"
         curl -s http://getcomposer.org/installer | php
 
-        echo -e "Installing Symfony ${_sfVersion}"
+        echo "Installing Symfony ${_sfVersion}"
         php composer.phar create-project symfony/framework-standard-edition ${_workspace} ${_sfVersion}
 
 	chown -R ${_user}: ${_workspace}
@@ -81,4 +81,4 @@ then
 fi
 
 
-echo -e "You can now access your workspace at ${_url}"
+echo "You can now access your workspace at ${_url}"
